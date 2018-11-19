@@ -47,6 +47,8 @@ export class MainScene extends Phaser.Scene {
   }
 
   preload(): void {
+    // Staff art is from https://opengameart.org/content/gemmed-items
+    this.load.image("white-staff", "./assets/boilerplate/white-staff.png");
     // Fire art is from https://opengameart.org/content/9-frame-fire-animation-16x-32x-64x
     this.load.spritesheet("black-magic", "./assets/boilerplate/black-magic.png", {
       frameWidth: 32,
