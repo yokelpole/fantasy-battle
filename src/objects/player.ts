@@ -158,6 +158,8 @@ export class Player extends BaseObject {
     else if (this.y < y) this.anims.play(`${this.type}-down`, true);
     else if (this.y > y) this.anims.play(`${this.type}-up`, true);
 
+    if (this.weapon) this.weapon.positionShortRangeWeapon();
+
     this.x = x;
     this.y = y;
   }

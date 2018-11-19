@@ -29,13 +29,6 @@ export class Fighter extends Player {
       id,
       scene: this.scene,
       player: this,
-      x: this.x,
-      y: this.y,
     });
-  }
-
-  updatePlayerRemotely(x: number, y: number): void {
-    super.updatePlayerRemotely(x, y);
-    if (this.weapon) this.weapon.positionSword();
   }
 }

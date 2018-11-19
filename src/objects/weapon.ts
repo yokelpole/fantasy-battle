@@ -2,6 +2,8 @@ import * as _ from "lodash";
 import { Player, Direction } from "./player";
 import { BaseObject } from "./baseObject";
 
+const shortRangeWeapons = ["sword", "mage-staff"];
+
 export class Weapon extends BaseObject {
   public player: Player;
   public damageAmount: number;
@@ -10,12 +12,12 @@ export class Weapon extends BaseObject {
   protected respawnDelay: number;
   protected destroyTimeout;
 
-  constructor({ scene, player, key, x, y, id, type, damageAmount, respawnDelay, timeAlive }) {
+  constructor({ scene, player, key, id, type, damageAmount, respawnDelay, timeAlive }) {
     super({
       scene,
       id,
-      x,
-      y,
+      x: player.x,
+      y: player.y,
       key,
       parentId: player.id,
       type
@@ -55,9 +57,27 @@ export class Weapon extends BaseObject {
     clearTimeout(this.destroyTimeout);
   }
 
+  positionShortRangeWeapon(): void {
+    if (!_.includes(shortRangeWeapons, this.type)) return;
+
+    const playerAnimKey = this.player.anims.getCurrentKey();
+    const playerType = this.player.type;
+
+    if (playerAnimKey === `${playerType}-down`) {
+      this.y = this.player.y + 16;
+      this.setDepth(6); // Sword needs to be on top of fighter.
+    } else if (playerAnimKey === `${playerType}-up`) {
+      this.y = this.player.y - 16;
+    } else if (playerAnimKey === `${playerType}-left`) {
+      this.x = this.player.x - 16;
+    } else if (playerAnimKey === `${playerType}-right`) {
+      this.x = this.player.x + 16;
+    }
+  }
+
   makeDead() {
     super.makeDead();
-    setTimeout(() => this.canRespawn = true, this.respawnDelay);
+    setTimeout(() => (this.canRespawn = true), this.respawnDelay);
   }
 
   flipWeapon(): void {

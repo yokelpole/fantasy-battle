@@ -4,13 +4,11 @@ import { Direction } from "./player";
 export class BlackMagic extends Weapon {
   public distance: number = 300;
 
-  constructor({ scene, player, x, y, id }) {
+  constructor({ scene, player, id }) {
     super({
       scene,
       id,
       player,
-      x,
-      y,
       key: "black-magic",
       type: "black-magic",
       damageAmount: 50,

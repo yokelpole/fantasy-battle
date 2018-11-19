@@ -2,7 +2,7 @@ import * as _ from "lodash";
 import { Weapon } from "./weapon";
 import { Player } from "./player";
 
-export class Sword extends Weapon {
+export class MageStaff extends Weapon {
   public player: Player;
 
   constructor({ scene, player, id }) {
@@ -10,9 +10,9 @@ export class Sword extends Weapon {
       scene,
       id,
       player,
-      key: "sword",
-      type: "sword",
-      damageAmount: 100,
+      key: "mage-staff",
+      type: "mage-staff",
+      damageAmount: 25,
       respawnDelay: 250,
       timeAlive: 200
     });

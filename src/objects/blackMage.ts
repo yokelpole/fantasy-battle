@@ -18,8 +18,6 @@ export class BlackMage extends Player {
       id,
       player: this,
       scene: this.scene,
-      x: this.x,
-      y: this.y
     });
   }
 }

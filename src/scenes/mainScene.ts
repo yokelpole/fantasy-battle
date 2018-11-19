@@ -3,6 +3,7 @@ import { Fighter } from "../objects/fighter";
 import * as _ from "lodash";
 import { WebSocketManager } from "../network/websocket-manager";
 import { BlackMage } from "../objects/blackMage";
+import { WhiteMage } from "../objects/whiteMage";
 
 // TODO: this shouldn't be here, but it doesn't behave well in
 // Player because of how it references a subclass of it.
@@ -16,8 +17,19 @@ export function createNewRandomPlayer(scene: MainScene) {
       y: _.random(_.toNumber(scene.sys.game.config.height)),
       isPlayer: true
     });
-  } /*if (type === "black-mage")*/ else {
+  } 
+  
+  if (type === "black-mage") {
     return new BlackMage({
+      scene,
+      x: _.random(_.toNumber(scene.sys.game.config.width)),
+      y: _.random(_.toNumber(scene.sys.game.config.height)),
+      isPlayer: true
+    });
+  }
+
+  if (type === "white-mage") {
+    return new WhiteMage({
       scene,
       x: _.random(_.toNumber(scene.sys.game.config.width)),
       y: _.random(_.toNumber(scene.sys.game.config.height)),
@@ -48,7 +60,7 @@ export class MainScene extends Phaser.Scene {
 
   preload(): void {
     // Staff art is from https://opengameart.org/content/gemmed-items
-    this.load.image("white-staff", "./assets/boilerplate/white-staff.png");
+    this.load.image("mage-staff", "./assets/boilerplate/mage-staff.png");
     // Fire art is from https://opengameart.org/content/9-frame-fire-animation-16x-32x-64x
     this.load.spritesheet("black-magic", "./assets/boilerplate/black-magic.png", {
       frameWidth: 32,
