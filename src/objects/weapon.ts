@@ -2,7 +2,9 @@ import * as _ from "lodash";
 import { Player, Direction } from "./player";
 import { BaseObject } from "./baseObject";
 
-const shortRangeWeapons = ["sword", "mage-staff"];
+export const ShortRangeWeapons = ["sword", "mage-staff"];
+export const ProjectileWeapons = ["black-magic"];
+export const WeaponTypes = [...ShortRangeWeapons, ...ProjectileWeapons];
 
 export class Weapon extends BaseObject {
   public player: Player;
@@ -58,7 +60,7 @@ export class Weapon extends BaseObject {
   }
 
   positionShortRangeWeapon(): void {
-    if (!_.includes(shortRangeWeapons, this.type)) return;
+    if (!_.includes(ShortRangeWeapons, this.type)) return;
 
     const playerAnimKey = this.player.anims.getCurrentKey();
     const playerType = this.player.type;

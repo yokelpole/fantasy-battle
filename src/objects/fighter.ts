@@ -9,17 +9,6 @@ export class Fighter extends Player {
     super({ ...params, type: "fighter" });
   }
 
-  update(): void {
-    super.update();
-
-    if (this.weapon) {
-      if (this.cursorKeys.left.isDown) this.weapon.x -= this.moveRate;
-      if (this.cursorKeys.right.isDown) this.weapon.x += this.moveRate;
-      if (this.cursorKeys.up.isDown) this.weapon.y -= this.moveRate;
-      if (this.cursorKeys.down.isDown) this.weapon.y += this.moveRate;
-    }
-  }
-
   addWeapon(id: string = undefined): void {
     if (!this.canAddWeapon()) return;
 

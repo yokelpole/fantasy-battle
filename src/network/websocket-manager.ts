@@ -3,6 +3,8 @@ import { Player, PlayerTypes } from "../objects/player";
 import { MainScene, createNewRandomPlayer } from "../scenes/mainScene";
 import { Fighter } from "../objects/fighter";
 import { BlackMage } from "../objects/blackMage";
+import { WeaponTypes } from "../objects/weapon";
+import { WhiteMage } from "../objects/whiteMage";
 
 interface ConstructorParams {
   address: string;
@@ -99,13 +101,13 @@ export class WebSocketManager {
         }
 
         otherPlayer.updatePlayerRemotely(obj.x, obj.y);
-      } else if (obj.type === "sword" || obj.type === "black-magic") {
+      } else if (_.includes(WeaponTypes, obj.type)) {
         if (obj.health <= 0) return;
 
         const player = _.first(_.filter(this.scene.otherPlayers, { id: obj.parentId }));
         if (!player) return;
 
-        if (player.weapon && player.weapon.active) player.updateWeapon(obj);
+        if (player.weapon && player.weapon.active) player.updateRemoteWeapon(obj);
         else player.addWeapon(obj.id);
       } else if (_.includes(PlayerTypes, obj.type)) {
         if (obj.health <= 0) return;
@@ -122,6 +124,7 @@ export class WebSocketManager {
         // TODO: Instantiate subclasses in parent class?
         if (obj.type === "fighter") newPlayer = new Fighter(options);
         else if (obj.type === "black-mage") newPlayer = new BlackMage(options);
+        else if (obj.type === "white-mage") newPlayer = new WhiteMage(options);
         else newPlayer = new Player({ ...options, type: obj.type });
 
         this.scene.otherPlayers[newPlayer.id] = newPlayer;

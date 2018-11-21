@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import { MainScene } from "../scenes/mainScene";
 import { BaseObject } from "./baseObject";
-import { Weapon } from "./weapon";
+import { Weapon, ShortRangeWeapons } from "./weapon";
 import { ResponseObject } from "../network/websocket-manager";
 
 interface ConstructorParams {
@@ -112,6 +112,7 @@ export class Player extends BaseObject {
     }
 
     if (this.sKey.isDown) this.addWeapon();
+    this.updateLocalShortRangeWeapon();
   }
 
   // To be extended by other classes.
@@ -123,13 +124,22 @@ export class Player extends BaseObject {
     if (this.weapon) {
       if (this.weapon.active) return false;
       if (this.weapon.id === id) return false;
-      if (!this.weapon.canRespawn) return false
+      if (!this.weapon.canRespawn) return false;
     }
 
     return true;
   }
 
-  updateWeapon(obj: ResponseObject): void {
+  updateLocalShortRangeWeapon() {
+    if (!this.weapon || !_.includes(ShortRangeWeapons, this.weapon.type)) return;
+
+    if (this.cursorKeys.left.isDown) this.weapon.x -= this.moveRate;
+    if (this.cursorKeys.right.isDown) this.weapon.x += this.moveRate;
+    if (this.cursorKeys.up.isDown) this.weapon.y -= this.moveRate;
+    if (this.cursorKeys.down.isDown) this.weapon.y += this.moveRate;
+  }
+
+  updateRemoteWeapon(obj: ResponseObject): void {
     if (!this.weapon || !this.weapon.active) return;
 
     this.weapon.x = obj.x;
@@ -158,9 +168,9 @@ export class Player extends BaseObject {
     else if (this.y < y) this.anims.play(`${this.type}-down`, true);
     else if (this.y > y) this.anims.play(`${this.type}-up`, true);
 
-    if (this.weapon) this.weapon.positionShortRangeWeapon();
-
     this.x = x;
     this.y = y;
+
+    if (this.weapon && this.weapon.active) this.weapon.positionShortRangeWeapon();
   }
 }
