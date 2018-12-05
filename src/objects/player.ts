@@ -32,6 +32,7 @@ export const PlayerTypes = [
 export function generateAnimationFrames(scene: MainScene) {
   _.each(PlayerTypes, (characterType: string, x: number) => {
     const startFrame = x * 8;
+    const frameRate = 10;
 
     scene.anims.create({
       key: `${characterType}-down`,
@@ -39,7 +40,7 @@ export function generateAnimationFrames(scene: MainScene) {
         start: startFrame + 0,
         end: startFrame + 1
       }),
-      frameRate: 10
+      frameRate,
     });
     scene.anims.create({
       key: `${characterType}-up`,
@@ -47,7 +48,7 @@ export function generateAnimationFrames(scene: MainScene) {
         start: startFrame + 2,
         end: startFrame + 3
       }),
-      frameRate: 10
+      frameRate,
     });
     scene.anims.create({
       key: `${characterType}-right`,
@@ -55,7 +56,7 @@ export function generateAnimationFrames(scene: MainScene) {
         start: startFrame + 4,
         end: startFrame + 5
       }),
-      frameRate: 10
+      frameRate,
     });
     scene.anims.create({
       key: `${characterType}-left`,
@@ -63,7 +64,7 @@ export function generateAnimationFrames(scene: MainScene) {
         start: startFrame + 6,
         end: startFrame + 7
       }),
-      frameRate: 10
+      frameRate,
     });
   });
 }

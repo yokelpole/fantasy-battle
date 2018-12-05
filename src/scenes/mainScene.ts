@@ -4,46 +4,22 @@ import * as _ from "lodash";
 import { WebSocketManager } from "../network/websocket-manager";
 import { BlackMage } from "../objects/blackMage";
 import { WhiteMage } from "../objects/whiteMage";
+// import { Thief } from "../objects/thief";
 
 // TODO: this shouldn't be here, but it doesn't behave well in
 // Player because of how it references a subclass of it.
 export function createNewRandomPlayer(scene: MainScene) {
   const type = _.sample(Player.PlayerTypes);
+  const x = _.random(_.toNumber(scene.sys.game.config.width));
+  const y = _.random(_.toNumber(scene.sys.game.config.height));
+  const params = { scene, x, y, isPlayer: true };
 
-  if (type === "fighter") {
-    return new Fighter({
-      scene,
-      x: _.random(_.toNumber(scene.sys.game.config.width)),
-      y: _.random(_.toNumber(scene.sys.game.config.height)),
-      isPlayer: true
-    });
-  } 
-  
-  if (type === "black-mage") {
-    return new BlackMage({
-      scene,
-      x: _.random(_.toNumber(scene.sys.game.config.width)),
-      y: _.random(_.toNumber(scene.sys.game.config.height)),
-      isPlayer: true
-    });
-  }
+  if (type === "fighter") return new Fighter(params);
+  if (type === "black-mage") return new BlackMage(params);
+  if (type === "white-mage") return new WhiteMage(params);
+  // if (type === "thief") return new Thief(params);
 
-  if (type === "white-mage") {
-    return new WhiteMage({
-      scene,
-      x: _.random(_.toNumber(scene.sys.game.config.width)),
-      y: _.random(_.toNumber(scene.sys.game.config.height)),
-      isPlayer: true
-    });
-  }
-
-  return new Player.Player({
-    scene,
-    x: _.random(_.toNumber(scene.sys.game.config.width)),
-    y: _.random(_.toNumber(scene.sys.game.config.height)),
-    type,
-    isPlayer: true
-  });
+  return new Player.Player({ ...params, type });
 }
 
 // TODO: Need to have some kind of game manager to track the player
@@ -79,7 +55,7 @@ export class MainScene extends Phaser.Scene {
     // TODO: This might be better in a helper.
     this.anims.create({
       key: "black-magic-anim",
-      frames: this.anims.generateFrameNames("black-magic", {
+      frames: this.anims.generateFrameNumbers("black-magic", {
         start: 0,
         end: 8
       }),
